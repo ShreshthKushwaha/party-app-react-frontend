@@ -1,25 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import UserDetails from './components/UserDetails';
+import PartyList from './components/PartyList';
+import AddPartyForm from './components/AddPartyForm';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <UserDetails userId={1} />
+      <PartyList />
+      <AddPartyForm />
     </div>
   );
-}
+};
+
+
 
 export default App;
