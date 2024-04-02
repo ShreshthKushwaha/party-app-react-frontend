@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FaUser, FaCheck, FaTimes } from 'react-icons/fa'; // Importing icons from react-icons
 
 const RequestList = ({ partyId }) => {
     const [invitations, setInvitations] = useState([]);
@@ -57,15 +58,31 @@ const RequestList = ({ partyId }) => {
         // Handle reject invitation logic here
     };
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'ACCEPTED':
+                return '#bfffba'; // Light green
+            case 'REJECTED':
+                return '#fcaeae'; // Light orange
+            case 'PENDING':
+            default:
+                return '#e6ecf5'; // Light blue
+        }
+    };
+
     return (
-        <ul>
+        <ul style={{ listStyle: 'none', padding: 0 }}>
             {invitations.map(invitation => (
-                <li key={invitation.id}>
-                    <p>From: {userDetails[invitation.userId]?.fname}</p>
-                    <p>Status: {invitation.status}</p>
-                    <button onClick={() => handleCheckProfile(invitation.userId)}>Check Profile</button>
-                    <button onClick={() => handleAccept(invitation.id)}>Accept</button>
-                    <button onClick={() => handleReject(invitation.id)}>Reject</button>
+                <li key={invitation.id} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: getStatusColor(invitation.status) }}>
+                    <div>
+                        <p><FaUser /> From: {userDetails[invitation.userId]?.fname}</p>
+                        <p>Status: {invitation.status}</p>
+                    </div>
+                    <div>
+                        <button onClick={() => handleCheckProfile(invitation.userId)} style={{ marginRight: '10px' }}><FaUser /> Check Profile</button>
+                        {invitation.status !== 'ACCEPTED' && <button onClick={() => handleAccept(invitation.id)} style={{ marginRight: '5px', backgroundColor: 'green', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }}><FaCheck /> Accept</button>}
+                        {invitation.status !== 'REJECTED' && <button onClick={() => handleReject(invitation.id)} style={{ backgroundColor: 'red', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }}><FaTimes /> Reject</button>}
+                    </div>
                 </li>
             ))}
         </ul>
