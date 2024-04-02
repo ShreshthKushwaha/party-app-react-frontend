@@ -28,7 +28,7 @@ const Party = (props) => {
       <h3 style={titleStyles}>{props.title}</h3>
       <p style={paragraphStyles}>Date: {props.partyDate}</p>
       {/* Use Link to redirect to the party detail page */}
-      <Link to={`/party/${props.partyId}`}>Attend</Link>
+      <Link to={`/party/${props.partyId}`}>Details</Link>
     </div>
   );
 };

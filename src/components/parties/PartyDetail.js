@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import RequestList from '../requests/RequestList';
 
 const PartyDetail = () => {
   const { id } = useParams();
@@ -25,7 +26,17 @@ const PartyDetail = () => {
           <p>Title: {party.title}</p>
           <p>Date: {party.partyDate}</p>
           {/* Add more party details here */}
+
+          <div>
+            <h2>Guest Invitation List</h2>
+
+            <RequestList partyId={id} />
+
+
+          </div>
         </div>
+
+        
       ) : (
         <p>Loading...</p>
       )}

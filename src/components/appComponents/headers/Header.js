@@ -21,6 +21,11 @@ const Header = (props) => {
         Add Party + </Link>
 
 
+
+        <Link to="/my-parties" style={{ color: '#fff', marginLeft: '20px' }}>
+        My Parties </Link>    
+
+
        
 
       

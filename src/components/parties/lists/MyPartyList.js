@@ -1,7 +1,7 @@
 import React from 'react';
 import Party from '../Party.js';
 
-const MyParties = (props) => {
+const MyPartyList = (props) => {
   const containerStyles = {
     display: 'flex',
     flexDirection: 'column',
@@ -21,7 +21,7 @@ const MyParties = (props) => {
 
   return (
     <div style={containerStyles}>
-      <h3 style={headingStyles}>HOUSE PARTIES IN MY CITY</h3>
+     
       <div style={tileStyles}>
         {props.parties.map(party => (
           <Party key={party.id} {...party} />
@@ -31,4 +31,4 @@ const MyParties = (props) => {
   );
 };
 
-export default MyParties;
+export default MyPartyList;
