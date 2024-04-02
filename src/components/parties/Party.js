@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const Party = (props) => {
   const cardStyles = {
-    backgroundColor: '#FFB6C1',
+    backgroundColor: '#87CEFA',
     borderRadius: '8px',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     padding: '20px',

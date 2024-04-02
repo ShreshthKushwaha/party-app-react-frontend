@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './AddPartyForm.css'; // Import CSS file for styling
+import { useSelector } from 'react-redux';
 
 const AddPartyForm = () => {
   const [partyData, setPartyData] = useState({
@@ -13,6 +14,8 @@ const AddPartyForm = () => {
     description: ''
   });
 
+  const userId = useSelector((state) => state.auth.userId);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setPartyData({ ...partyData, [name]: value });
@@ -22,22 +25,22 @@ const AddPartyForm = () => {
     event.preventDefault();
 
     // Send POST request to add a new party
-    axios.post('http://localhost:9090/api/users/1/parties', partyData)
+    axios.post(`http://localhost:9090/api/users/${userId}/parties`, partyData)
       .then(response => {
-        console.log('Party added successfully:', response.data);
-        // Reset form fields
-        setPartyData({
-          title: '',
-          address: '',
-          zip: '',
-          partyDate: '',
-          startTime: '',
-          endTime: '',
-          description: ''
-        });
+      console.log('Party added successfully:', response.data);
+      // Reset form fields
+      setPartyData({
+        title: '',
+        address: '',
+        zip: '',
+        partyDate: '',
+        startTime: '',
+        endTime: '',
+        description: ''
+      });
       })
       .catch(error => {
-        console.error('Error adding party:', error);
+      console.error('Error adding party:', error);
       });
   };
 
