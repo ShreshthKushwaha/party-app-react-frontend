@@ -50,12 +50,36 @@ const RequestList = ({ partyId }) => {
         }
     };
 
-    const handleAccept = (invitationId) => {
-        // Handle accept invitation logic here
+    const handleAccept = async (invitationId) => {
+        try {
+            // Make API request to accept the invitation
+            await axios.put(`http://localhost:9090/api/invitations/${invitationId}/accept`);
+            // Update the invitation status in the UI
+            setInvitations(prevInvitations => prevInvitations.map(invitation => {
+                if (invitation.id === invitationId) {
+                    return { ...invitation, status: 'ACCEPTED' };
+                }
+                return invitation;
+            }));
+        } catch (error) {
+            console.error('Error accepting invitation:', error);
+        }
     };
 
-    const handleReject = (invitationId) => {
-        // Handle reject invitation logic here
+    const handleReject = async (invitationId) => {
+        try {
+            // Make API request to reject the invitation
+            await axios.put(`http://localhost:9090/api/invitations/${invitationId}/reject`);
+            // Update the invitation status in the UI
+            setInvitations(prevInvitations => prevInvitations.map(invitation => {
+                if (invitation.id === invitationId) {
+                    return { ...invitation, status: 'REJECTED' };
+                }
+                return invitation;
+            }));
+        } catch (error) {
+            console.error('Error rejecting invitation:', error);
+        }
     };
 
     const getStatusColor = (status) => {
