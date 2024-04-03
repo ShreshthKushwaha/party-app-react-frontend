@@ -9,6 +9,7 @@ const PartyDetail = () => {
   const [party, setParty] = useState(null);
   const userId = useSelector((state) => state.auth.userId);
   const [isRequestSent, setIsRequestSent] = useState(false);
+  const [isRequestAccepted, setIsRequestAccepted] = useState(false);
 
   useEffect(() => {
     // Fetch party details based on the party ID from the URL params
@@ -23,20 +24,6 @@ const PartyDetail = () => {
       });
   }, [id]);
 
-
-
-
-  useEffect(() => {
-    // Fetch party details based on the party ID from the URL params
-    axios.get(`http://localhost:9090/api/parties/${id}`)
-      .then(response => {
-        setParty(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching party details:', error);
-      });
-  }, [id]); // Dependency on party ID from URL params
-
   const checkRequestStatus = () => {
     // Make an API call to fetch invitations for the party
     axios.get(`http://localhost:9090/api/${id}/invitations`)
@@ -45,16 +32,18 @@ const PartyDetail = () => {
         // Check if any invitation exists for the user
         const hasInvitation = response.data.some(invitation => invitation.userId === userId);
         setIsRequestSent(hasInvitation); // Set to true if invitation exists
+        // Check if the invitation is accepted
+        const isAccepted = response.data.some(invitation => invitation.userId === userId && invitation.status === 'ACCEPTED');
+        setIsRequestAccepted(isAccepted); // Set to true if invitation is accepted
       })
       .catch(error => {
         console.error('Error checking request status:', error);
       });
-};
-
+  };
 
   const handleSendRequest = () => {
     // Make an API call to send the request
-    axios.post(`http://localhost:9090/api/parties/${id}/invitations/${userId}`,{})
+    axios.post(`http://localhost:9090/api/parties/${id}/invitations/${userId}`, {})
       .then(response => {
         setIsRequestSent(true); // Update state to indicate request is sent
       })
@@ -63,9 +52,8 @@ const PartyDetail = () => {
       });
   };
 
-
   return (
-    <div>
+    <div style={{  padding: '20px' }}>
       <h2>Party Details</h2>
       {party ? (
         <div>
@@ -77,9 +65,20 @@ const PartyDetail = () => {
               Request Invitation
             </button>
           )}
-          {isRequestSent && <p>You have already sent a request.</p>}
+          {isRequestSent && !isRequestAccepted && <p>You have already sent a request.</p>}
+          {isRequestAccepted && (
+            <div style={{
+              backgroundColor: isRequestAccepted ? '#bfffba' : 'inherit',
+              padding: '20px',
+              borderRadius: '10px',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+            }}>
+              <p style={{ fontSize: '24px' }}>🎉 CONGRATULATIONS! 🎉</p>
+              <p style={{ marginBottom: '20px' }}>ORGANIZER HAS ACCEPTED YOUR REQUEST.</p>
+              <p>🎟️ ONCE YOU GET TO THE VENUE SHOW THEM THIS PAGE TO VERIFY YOUR INVITATIONS. HAVE FUN!! 🎉</p>
+            </div>
+          )}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            
             <div>
               <h2>Guest Invitation List</h2>
               {party.user.id === userId && <RequestList partyId={id} />}
