@@ -23,7 +23,8 @@ const AddUserForm = () => {
 
   return (
     <div>
-      <h2>Add User</h2>
+       
+    
       <form onSubmit={handleSubmit}>
         <input
           type="text"

@@ -17,13 +17,25 @@ const Header = (props) => {
     <div style={headerStyles}>
       {props.title}
 
-      <Link to="/add-party" style={{ color: '#fff', marginLeft: '20px' }}>
-        Add Party + </Link>
+{props.home ? (
+  <>
+    <Link to="/add-party" style={{ color: '#fff', marginLeft: '20px' }}>
+      Add Party +
+    </Link>
+    <Link to="/my-parties" style={{ color: '#fff', marginLeft: '20px' }}>
+      My Parties
+    </Link>
+  </>
+) : (
+  ''
+)}
+     {/*<Link to="/add-party" style={{ color: '#fff', marginLeft: '20px' }}>
+        Add Party + </Link>*/} 
 
+      {/* <Link to="/my-parties" style={{ color: '#fff', marginLeft: '20px' }}>
+        My Parties </Link>  */}
 
-
-        <Link to="/my-parties" style={{ color: '#fff', marginLeft: '20px' }}>
-        My Parties </Link>    
+         
 
 
        

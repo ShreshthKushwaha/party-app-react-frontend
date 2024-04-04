@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './AddPartyForm.css'; // Import CSS file for styling
 import { useSelector } from 'react-redux';
+import Header from '../../appComponents/headers/Header';
 
 const AddPartyForm = () => {
   const [partyData, setPartyData] = useState({
@@ -45,9 +46,12 @@ const AddPartyForm = () => {
   };
 
   return (
-    <div className="form-container"> {/* Apply styling to this container */}
-      <h2>Add Party</h2>
+    <div>
+      <Header title='Add Party' home={false}></Header>
+      <div className="form-container"> {/* Apply styling to this container */}
+      
       <form onSubmit={handleSubmit}>
+        <h4> Party Title</h4>
         <input
           type="text"
           name="title"
@@ -56,6 +60,7 @@ const AddPartyForm = () => {
           onChange={handleChange}
           required
         />
+         <h4> Address </h4>
         <input
           type="text"
           name="address"
@@ -64,6 +69,7 @@ const AddPartyForm = () => {
           onChange={handleChange}
           required
         />
+         <h4> ZIP code </h4>
         <input
           type="text"
           name="zip"
@@ -72,6 +78,7 @@ const AddPartyForm = () => {
           onChange={handleChange}
           required
         />
+          <h4> Date of the party </h4>
         <input
           type="date"
           name="partyDate"
@@ -79,6 +86,7 @@ const AddPartyForm = () => {
           onChange={handleChange}
           required
         />
+          <h4> Start time </h4>
         <input
           type="time"
           name="startTime"
@@ -86,6 +94,7 @@ const AddPartyForm = () => {
           onChange={handleChange}
           required
         />
+          <h4> End time </h4>
         <input
           type="time"
           name="endTime"
@@ -93,6 +102,7 @@ const AddPartyForm = () => {
           onChange={handleChange}
           required
         />
+          <h4> Write a cool description of the party </h4>
         <input
           type="text"
           name="description"
@@ -104,6 +114,8 @@ const AddPartyForm = () => {
         <button type="submit">Add Party</button>
       </form>
     </div>
+    </div>
+    
   );
 };
 

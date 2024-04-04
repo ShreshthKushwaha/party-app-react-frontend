@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaUser, FaCheck, FaTimes } from 'react-icons/fa'; // Importing icons from react-icons
+import { useNavigate } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
 const RequestList = ({ partyId }) => {
     const [invitations, setInvitations] = useState([]);
     const [userDetails, setUserDetails] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchInvitations = async () => {
@@ -44,7 +47,9 @@ const RequestList = ({ partyId }) => {
         // Handle logic to display user details based on userDetails state
         const user = userDetails[userId];
         if (user) {
-            console.log('User Details:', user);
+            
+            navigate(`/users/${userId}`);
+           
         } else {
             console.log('User details not found.');
         }
@@ -103,6 +108,7 @@ const RequestList = ({ partyId }) => {
                         <p>Status: {invitation.status}</p>
                     </div>
                     <div>
+                   
                         <button onClick={() => handleCheckProfile(invitation.userId)} style={{ marginRight: '10px' }}><FaUser /> Check Profile</button>
                         {invitation.status !== 'ACCEPTED' && <button onClick={() => handleAccept(invitation.id)} style={{ marginRight: '5px', backgroundColor: 'green', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }}><FaCheck /> Accept</button>}
                         {invitation.status !== 'REJECTED' && <button onClick={() => handleReject(invitation.id)} style={{ backgroundColor: 'red', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }}><FaTimes /> Reject</button>}

@@ -3,13 +3,17 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import RequestList from '../requests/RequestList';
 import { useSelector } from 'react-redux';
+import Header from '../appComponents/headers/Header';
+import { Navigate } from 'react-router-dom';
 
 const PartyDetail = () => {
+
   const { id } = useParams();
   const [party, setParty] = useState(null);
   const userId = useSelector((state) => state.auth.userId);
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [isRequestAccepted, setIsRequestAccepted] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     // Fetch party details based on the party ID from the URL params
@@ -22,7 +26,22 @@ const PartyDetail = () => {
       .catch(error => {
         console.error('Error fetching party details:', error);
       });
+
   }, [id]);
+
+  useEffect(() => {
+    // Fetch party details based on the party ID from the URL params
+    axios.get(`http://localhost:9090/api/users/${userId}`)
+      .then(response => {
+        setUser(response.data);
+     
+        checkRequestStatus();
+      })
+      .catch(error => {
+        console.error('Error fetching user details:', error);
+      });
+      
+  }, [userId]);
 
   const checkRequestStatus = () => {
     // Make an API call to fetch invitations for the party
@@ -51,14 +70,48 @@ const PartyDetail = () => {
         console.error('Error sending request invitation:', error);
       });
   };
+  
+
+  const handleDeleteParty = () => {
+    axios.delete(`http://localhost:9090/api/parties/${id}`)
+      .then(response => {
+      
+      
+        alert('Party deleted');
+
+      
+      })
+      .catch(error => {
+        console.error('Error deleting party:', error);
+      });
+  };
 
   return (
-    <div style={{  padding: '20px' }}>
-      <h2>Party Details</h2>
+    <div>
+      <Header title={party?party.title:'Loading'}/>
+      <div style={{ 
+      background: 'linear-gradient(to right,white, #edf5ff)',
+      minHeight: '100vh',
+      padding: '20px',
+    }}>
+    
+      
       {party ? (
         <div>
-          <p>Title: {party.title}</p>
-          <p>Date: {party.partyDate}</p>
+
+                    <div style={{ 
+          background: 'linear-gradient(to right,white, #edf5ff)',
+          padding: '20px',
+          border: '3px solid black',
+        }}><p><b>Title:</b> {party.title}</p>
+          <p><b>Party Date: </b>{party.partyDate}</p>
+          <p><b>Description: </b>{party.description}</p>
+          <h4><b>VENUE DETAILS</b></h4>
+          <p><b>🏠 Address: </b>{party.address}</p>
+          <p><b>🏙️ ZIP CODE: </b>{party.zip}</p>
+          <p><b>🕒 Start time: </b>{party.startTime}</p>
+          <p><b>🕒 End time: </b>{party.endTime}</p>
+
           {/* Add more party details here */}
           {!isRequestSent && (
             <button onClick={handleSendRequest} disabled={isRequestSent}>
@@ -66,22 +119,37 @@ const PartyDetail = () => {
             </button>
           )}
           {isRequestSent && !isRequestAccepted && <p>You have already sent a request.</p>}
+</div>
           {isRequestAccepted && (
             <div style={{
-              backgroundColor: isRequestAccepted ? '#bfffba' : 'inherit',
+              backgroundColor: '#bfffba',
               padding: '20px',
               borderRadius: '10px',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+              border: '2px dotted #ccc',
             }}>
-              <p style={{ fontSize: '24px' }}>🎉 CONGRATULATIONS! 🎉</p>
+              <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>🍺🍺💃 CONGRATULATIONS 💃🕺🕺</h3>
+              <p style={{ marginBottom: '20px' }}>Dear <b>{user.fname} {user.lname},</b></p>
               <p style={{ marginBottom: '20px' }}>ORGANIZER HAS ACCEPTED YOUR REQUEST.</p>
               <p>🎟️ ONCE YOU GET TO THE VENUE SHOW THEM THIS PAGE TO VERIFY YOUR INVITATIONS. HAVE FUN!! 🎉</p>
+              <p>Party Animal Team</p>
+              <p>Texas A&M University</p>
             </div>
           )}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div>
-              <h2>Guest Invitation List</h2>
-              {party.user.id === userId && <RequestList partyId={id} />}
+              
+              {party.user.id === userId && 
+              <>
+              <div style={{padding:'10px'}}>
+              <button onClick={handleDeleteParty}>Delete Party</button>
+              </div>
+                
+               <h2>Guest Invitation List</h2>
+              <RequestList partyId={id} />
+             
+              </>
+              }
             </div>
           </div>
         </div>
@@ -89,6 +157,8 @@ const PartyDetail = () => {
         <p>Loading...</p>
       )}
     </div>
+    </div>
+    
   );
 };
 

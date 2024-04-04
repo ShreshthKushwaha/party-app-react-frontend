@@ -19,17 +19,19 @@ const MyParties = () => {
     // Fetch list of parties from the backend API
     axios.get(`http://localhost:9090/api/users/${userId}/parties`)
       .then(response => {
-        setParties(response.data);
+        // Filter parties with _active=true
+        const activeParties = response.data.filter(party => party._active);
+        setParties(activeParties);
       })
       .catch(error => {
         console.error('Error fetching parties:', error);
       });
-  }, []); 
+  }, [userId]);
 
 
   return (
     <div className="app">
-    <Header title="Party Animal🍺🍺"/>
+    <Header title="My Parties" home={false}/>
     
         Hii here are all the parties listed by you: {userId}
        

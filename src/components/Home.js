@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
 const Home = () => {
 
     var [parties, setParties] = useState([]);
@@ -18,7 +19,7 @@ const Home = () => {
     // Fetch list of parties from the backend API
     axios.get('http://localhost:9090/api/parties')
       .then(response => {
-        setParties(response.data);
+        setParties(response.data.filter(party => party._active === true));
       })
       .catch(error => {
         console.error('Error fetching parties:', error);
@@ -29,10 +30,11 @@ const Home = () => {
   return (
     <div className="app">
 
-        <Header title="Party Animal🍺🍺"/>
+        <Header title="Party Animal🍺🍺" home={true}/>
+       
         user id: {userId}
        
-        <Parties parties = {parties}/>
+        <Parties parties={parties}/>
        
         <Footer/>
 

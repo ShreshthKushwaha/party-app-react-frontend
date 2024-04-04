@@ -6,6 +6,8 @@ import PartyDetail from './components/parties/PartyDetail';
 import AddPartyForm from './components/parties/forms/AddPartyForm';
 import Login from './components/Login';
 import MyParties from './components/parties/MyParties';
+import UserDetail from './components/users/UserDetail';
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,6 +21,7 @@ const App = () => {
             <Route path="/party/:id" element={<PartyDetail />} />
             <Route path="/add-party" element={<AddPartyForm />} />
             <Route path="/my-parties" element={<MyParties />} />
+            <Route path="/users/:id" element={<UserDetail/>}/>
           </>
         ) : (
           <Route path="/" element={<Navigate to="/login" />} />
